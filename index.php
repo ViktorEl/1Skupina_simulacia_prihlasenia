@@ -1,20 +1,9 @@
-<!DOCTYPE html>
-<html lang="sk">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h2>Najskôr sa musíte prihlásiť</h2>
-
-    <form action="index.php" method="post">
-        <input type="email" name="mail" placeholder="Zadajte email" required> <br>
-        <input type="password" name="heslo" placeholder="Zadajte heslo" required> <br>
-        <input type="submit" name="tlacidlo" value="Prihlásiť">
-    </form>
-
-    <?php
+<?php
+        session_start();
+        if(isset($_SESSION["prihlasenie"]) && $_SESSION["prihlasenie"] === true) {
+            header("Location: domov.php");
+            exit();
+        }
         if(isset($_POST["tlacidlo"])) {
             if(isset($_POST["mail"]) && isset($_POST["heslo"])) {
                 $db_server = "localhost";
@@ -44,23 +33,34 @@
                         die("Zlé heslo");
                     }
                     else {
-                        echo "Ste prihlasený";
+                        $_SESSION["prihlasenie"] = true;
+                        $_SESSION["meno"] = $meno;
+                        header("Location: domov.php");
+                        exit();
                     }
                 }
-
-
-
-
-
-
-
-
             }
         }
 
-
-
     ?>
+
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Najskôr sa musíte prihlásiť</h2>
+
+    <form action="index.php" method="post">
+        <input type="email" name="mail" placeholder="Zadajte email" required> <br>
+        <input type="password" name="heslo" placeholder="Zadajte heslo" required> <br>
+        <input type="submit" name="tlacidlo" value="Prihlásiť">
+    </form>
+
+    
 
 
 
